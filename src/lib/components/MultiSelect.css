@@ -25,12 +25,21 @@
     justify-content: space-between;
     align-content: space-around;
 }
-.multiselect-inner-wrapper .multiselect-selected-item img {
-    height: 15px;
+.multiselect-inner-wrapper .multiselect-selected-item .remove-btn:after{
+    display: inline-block;
+    content: "\00d7";
+}
+.multiselect-inner-wrapper .multiselect-selected-item .remove-btn {
     width: 15px;
-    padding-left:4px;
-    -webkit-filter: invert(1);
-    filter: invert(1);
+    height: 15px;
+    line-height: 16px;
+    border-radius: 50%;
+    font-size: 15px;
+    color: #fff;
+    text-align: center;
+    border: solid 1px white;
+    cursor: pointer;
+    margin-left: 4px;
 }
 .multiselect-inner-wrapper .multiselect-input-wrapper{
     display: flex;

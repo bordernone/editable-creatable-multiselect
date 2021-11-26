@@ -1,5 +1,4 @@
 import './MultiSelect.css';
-import CrossIcon from '../assets/close.png';
 import React from "react";
 
 export class MultiSelect extends React.Component {
@@ -164,10 +163,9 @@ export class MultiSelect extends React.Component {
                      onClick={(event) => { this.handleSelectedItemClick(event, index)}}
                      key={index}>
                             {item.name}
-                            <img src={CrossIcon}
-                                alt={"Remove"}
-                                onClick={(e) => {this.handleDeleteSelection(e, index)}}
-                            />
+                            <div className={"remove-btn"}
+                                 onClick={(e) => {this.handleDeleteSelection(e, index)}}
+                                 />
                 </div>)
     }
 
