@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import MultiSelect from "./lib/index";
 import './App.css';
+import {useState} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [suggestions, setSuggestions] = useState([{name: 'First Suggestion'}, {name: 'Second Suggestion'}]);
+    const [selectedList, setSelectedList] = useState([]);
+
+    return (
+        <div className="App">
+            <MultiSelect
+                suggestions={suggestions}
+                selectedItems={selectedList}
+                updateSuggestions={(newList, added, removed) => {
+                    setSuggestions(newList)
+                }}
+                updateSelectedItems={(newList, added, removed, isCreated) => {
+                    setSelectedList(newList)
+                }}/>
+        </div>
+    );
 }
 
 export default App;

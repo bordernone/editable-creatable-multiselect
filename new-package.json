@@ -1,0 +1,15 @@
+{
+  "name": "editable-creatable-multiselect",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Editable & Creatable Multiselect Dropdown For React",
+  "author": "Bishnu Dev",
+  "keywords": ["multiselect", "dropdown", "ui", "select dropdown", "multiple select dropdown", "editable select dropdown", "creatable select dropdown"],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [ "dist", "README.md" ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jawblia/npm-test.git"
+  }
+}

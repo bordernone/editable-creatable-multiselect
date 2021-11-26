@@ -1,8 +1,12 @@
 {
   "name": "editable-creatable-multiselect",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
+  "description": "Editable & Creatable Multiselect Dropdown For React",
+  "author": "Bishnu Dev",
+  "keywords": ["multiselect", "dropdown", "ui", "select dropdown", "multiple select dropdown", "editable select dropdown", "creatable select dropdown"],
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -13,7 +17,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files",
+    "build-windows": "rimraf dist && SET NODE_ENV=production && babel src/lib --out-dir dist --copy-files",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -34,5 +39,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2"
   }
 }
