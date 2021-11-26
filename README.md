@@ -4,6 +4,9 @@ A simple multi-select dropdown for react that allows adding custom items to the 
 
     npm install editable-creatable-multiselect
 
+## Demo
+See demo at https://moh77.csb.app/
+
 ## Example Code
 ```javascript
 import MultiSelect from "editable-creatable-multiselect";
