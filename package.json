@@ -1,6 +1,6 @@
 {
   "name": "editable-creatable-multiselect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Editable & Creatable Multiselect Dropdown For React",
   "author": "Bishnu Dev",
@@ -13,6 +13,9 @@
     "url": "git+https://github.com/bordernone/editable-creatable-multiselect.git"
   },
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bordernone/editable-creatable-multiselect/issues"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@testing-library/jest-dom": "^5.15.1",
