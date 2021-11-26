@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/bordernone/editable-creatable-multiselect.git"
   },
+  "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@testing-library/jest-dom": "^5.15.1",
