@@ -6,6 +6,9 @@ A simple multi-select dropdown for react that allows adding custom items to the 
 
 ## Example Code
 ```javascript
+import MultiSelect from "editable-creatable-multiselect";
+import {useState} from "react";
+
 function App() {
     const [suggestions, setSuggestions] = useState([{name: 'First Suggestion'}, {name: 'Second Suggestion'}]);
     const [selectedList, setSelectedList] = useState([]);
@@ -24,6 +27,8 @@ function App() {
         </div>
     );
 }
+
+export default App;
 ```
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
