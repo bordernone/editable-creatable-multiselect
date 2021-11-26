@@ -11,8 +11,14 @@ export class MultiSelect extends React.Component {
             input: "",
             inputFieldWidth: 1,
             filteredSuggestions: [],
-            suggestionsCache:[]
+            suggestionsCache:[],
+            displayField:"name"
         };
+    }
+
+    componentDidMount = () => {
+        // Check if displayField is provided, otherwise use default "name"
+        if (this.props.displayField) this.setState({displayField:this.props.displayField});
     }
 
     // Input width updater
@@ -72,7 +78,7 @@ export class MultiSelect extends React.Component {
         this.props.updateSelectedItems(selectedItems, undefined, itemToRemove, false);
 
         // Put the item to input field
-        this.setState({input: itemToRemove.name}, () => {
+        this.setState({input: itemToRemove[this.state.displayField]}, () => {
             this.focusInputField();
             this.setInputWidth();
         });
@@ -135,8 +141,7 @@ export class MultiSelect extends React.Component {
         const enteredText = this.state.input;
         if (enteredText.trim().length === 0)return;
         const item = {
-            name: enteredText.split(',')[0],
-            value: ''
+            [this.state.displayField]: enteredText.split(',')[0]
         };
 
         // Add to seleted list // callback(newList, addedItem, removedItem, isCreated) Note: isCreated = if the item was created or chosen from suggested items
@@ -162,7 +167,7 @@ export class MultiSelect extends React.Component {
         return (<div className={"multiselect-selected-item"}
                      onClick={(event) => { this.handleSelectedItemClick(event, index)}}
                      key={index}>
-                            {item.name}
+                            {item[this.state.displayField]}
                             <div className={"remove-btn"}
                                  onClick={(e) => {this.handleDeleteSelection(e, index)}}
                                  />
@@ -175,7 +180,7 @@ export class MultiSelect extends React.Component {
         if (this.state.filteredSuggestions.indexOf(index) > -1 || this.state.filteredSuggestions.length === 0) {
             return (<div key={index}
                          onClick={(e) => {this.handleSuggestionClick(e, index)}}>
-                        {item.name}
+                        {item[this.state.displayField]}
                     </div>)
         }
     }

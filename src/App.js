@@ -16,7 +16,8 @@ function App() {
                 }}
                 updateSelectedItems={(newList, added, removed, isCreated) => {
                     setSelectedList(newList)
-                }}/>
+                }}
+                displayField={"name"}/>
         </div>
     );
 }
