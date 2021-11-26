@@ -5,6 +5,13 @@
   "description": "Editable & Creatable Multiselect Dropdown For React",
   "author": "Bishnu Dev",
   "keywords": ["multiselect", "dropdown", "ui", "select dropdown", "multiple select dropdown", "editable select dropdown", "creatable select dropdown"],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [ "dist", "README.md" ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bordernone/editable-creatable-multiselect.git"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@testing-library/jest-dom": "^5.15.1",
