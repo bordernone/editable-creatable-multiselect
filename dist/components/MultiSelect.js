@@ -19,8 +19,6 @@ require("core-js/modules/es.string.split.js");
 
 require("./MultiSelect.css");
 
-var _close = _interopRequireDefault(require("../assets/close.png"));
-
 var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -154,9 +152,8 @@ class MultiSelect extends _react.default.Component {
           this.handleSelectedItemClick(event, index);
         },
         key: index
-      }, item.name, /*#__PURE__*/_react.default.createElement("img", {
-        src: _close.default,
-        alt: "Remove",
+      }, item.name, /*#__PURE__*/_react.default.createElement("div", {
+        className: "remove-btn",
         onClick: e => {
           this.handleDeleteSelection(e, index);
         }
