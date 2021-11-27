@@ -21,6 +21,8 @@ require("./MultiSelect.css");
 
 var _react = _interopRequireDefault(require("react"));
 
+var _ClickAway = _interopRequireDefault(require("./ClickAway"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -28,6 +30,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 class MultiSelect extends _react.default.Component {
   constructor(props) {
     super(props);
+
+    _defineProperty(this, "componentDidMount", () => {
+      // Check if displayField is provided, otherwise use default "name"
+      if (this.props.displayField) this.setState({
+        displayField: this.props.displayField
+      });
+    });
 
     _defineProperty(this, "setInputWidth", () => {
       let x = (this.state.input.length + 1) * 8;
@@ -38,6 +47,9 @@ class MultiSelect extends _react.default.Component {
 
     _defineProperty(this, "focusInputField", () => {
       this.inputField.current.focus();
+      this.setState({
+        isFocused: true
+      });
     });
 
     _defineProperty(this, "filterSuggestions", input => {
@@ -79,7 +91,7 @@ class MultiSelect extends _react.default.Component {
       this.props.updateSelectedItems(selectedItems, undefined, itemToRemove, false); // Put the item to input field
 
       this.setState({
-        input: itemToRemove.name
+        input: itemToRemove[this.state.displayField]
       }, () => {
         this.focusInputField();
         this.setInputWidth();
@@ -120,13 +132,18 @@ class MultiSelect extends _react.default.Component {
       this.focusInputField();
     });
 
+    _defineProperty(this, "clickedAway", () => {
+      this.setState({
+        isFocused: false
+      });
+    });
+
     _defineProperty(this, "addItemToList", e => {
       e.preventDefault();
       const enteredText = this.state.input;
       if (enteredText.trim().length === 0) return;
       const item = {
-        name: enteredText.split(',')[0],
-        value: ''
+        [this.state.displayField]: enteredText.split(',')[0]
       }; // Add to seleted list // callback(newList, addedItem, removedItem, isCreated) Note: isCreated = if the item was created or chosen from suggested items
 
       this.props.updateSelectedItems([...this.props.selectedItems, item], item, undefined, true); // Update input field and reset filtered suggestions
@@ -152,7 +169,7 @@ class MultiSelect extends _react.default.Component {
           this.handleSelectedItemClick(event, index);
         },
         key: index
-      }, item.name, /*#__PURE__*/_react.default.createElement("div", {
+      }, item[this.state.displayField], /*#__PURE__*/_react.default.createElement("div", {
         className: "remove-btn",
         onClick: e => {
           this.handleDeleteSelection(e, index);
@@ -160,38 +177,27 @@ class MultiSelect extends _react.default.Component {
       }));
     });
 
-    _defineProperty(this, "renderSuggestedItem", (item, index) => {
-      // Check if filetered suggestion is empty, if yes, show all items
-      if (this.state.filteredSuggestions.indexOf(index) > -1 || this.state.filteredSuggestions.length === 0) {
-        return /*#__PURE__*/_react.default.createElement("div", {
-          key: index,
-          onClick: e => {
-            this.handleSuggestionClick(e, index);
-          }
-        }, item.name);
-      }
-    });
-
     this.inputField = /*#__PURE__*/_react.default.createRef();
     this.state = {
       input: "",
       inputFieldWidth: 1,
       filteredSuggestions: [],
-      suggestionsCache: []
+      displayField: "name",
+      isFocused: false
     };
-  } // Input width updater
-
+  }
 
   // Update filtered suggestions when props have changed
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props !== prevProps) {
       this.filterSuggestions(this.state.input);
     }
-  } // Add new item to the list "Create"
-
+  }
 
   render() {
-    return /*#__PURE__*/_react.default.createElement("div", {
+    return /*#__PURE__*/_react.default.createElement(_ClickAway.default, {
+      onBlurCallback: this.clickedAway
+    }, /*#__PURE__*/_react.default.createElement("div", {
       className: "multiselect-wrapper",
       onClick: this.focusInputField
     }, /*#__PURE__*/_react.default.createElement("div", {
@@ -206,13 +212,43 @@ class MultiSelect extends _react.default.Component {
       value: this.state.input,
       ref: this.inputField,
       onKeyPress: this.handleKeyPressInput
-    }))), /*#__PURE__*/_react.default.createElement("div", {
-      className: "multiselect-dropdown-wrapper"
-    }, /*#__PURE__*/_react.default.createElement("div", {
-      className: "dropdown-content show"
-    }, this.props.suggestions.map(this.renderSuggestedItem))));
+    }))), /*#__PURE__*/_react.default.createElement(MultiSelectDropdownList, {
+      suggestions: this.props.suggestions,
+      filteredSuggestions: this.state.filteredSuggestions,
+      displayField: this.state.displayField,
+      onClickCallback: this.handleSuggestionClick,
+      isVisible: this.state.isFocused
+    })));
   }
 
 }
 
 exports.MultiSelect = MultiSelect;
+
+const MultiSelectDropdownList = props => {
+  const {
+    suggestions,
+    filteredSuggestions,
+    displayField,
+    onClickCallback,
+    isVisible
+  } = props; // Display suggested items
+
+  const renderSuggestedItem = (item, index) => {
+    // Check if filetered suggestion is empty, if yes, show all items
+    if (filteredSuggestions.indexOf(index) > -1 || filteredSuggestions.length === 0) {
+      return /*#__PURE__*/_react.default.createElement("div", {
+        key: index,
+        onClick: e => {
+          onClickCallback(e, index);
+        }
+      }, item[displayField]);
+    }
+  };
+
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "multiselect-dropdown-wrapper"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "dropdown-content " + (isVisible ? "show" : "")
+  }, suggestions.map(renderSuggestedItem)));
+};

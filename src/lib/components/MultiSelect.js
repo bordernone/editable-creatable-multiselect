@@ -1,5 +1,6 @@
 import './MultiSelect.css';
 import React from "react";
+import ClickAwayContainer from './ClickAway';
 
 export class MultiSelect extends React.Component {
     constructor(props) {
@@ -11,8 +12,8 @@ export class MultiSelect extends React.Component {
             input: "",
             inputFieldWidth: 1,
             filteredSuggestions: [],
-            suggestionsCache:[],
-            displayField:"name"
+            displayField:"name",
+            isFocused:false,
         };
     }
 
@@ -32,6 +33,7 @@ export class MultiSelect extends React.Component {
     // Focus on input field
     focusInputField = () => {
         this.inputField.current.focus();
+        this.setState({isFocused:true})
     }
 
     // Filter suggestions based on user's input
@@ -135,6 +137,10 @@ export class MultiSelect extends React.Component {
         }
     }
 
+    clickedAway = () => {
+        this.setState({isFocused:false});
+    }
+
     // Add new item to the list "Create"
     addItemToList = (e) => {
         e.preventDefault();
@@ -174,35 +180,51 @@ export class MultiSelect extends React.Component {
                 </div>)
     }
 
+    render() {
+        return (
+            <ClickAwayContainer onBlurCallback={this.clickedAway}>
+                <div className={"multiselect-wrapper"} onClick={this.focusInputField}>
+                    <div className={"multiselect-inner-wrapper"}>
+                        {this.props.selectedItems.map(this.renderSelectedItem)}
+                        <div className={"multiselect-input-wrapper"}>
+                            <input onChange={this.onInputChange} style={{width: `${this.state.inputFieldWidth}px`}}
+                                   value={this.state.input} ref={this.inputField} onKeyPress={this.handleKeyPressInput}/>
+                        </div>
+                    </div>
+
+
+                    <MultiSelectDropdownList
+                        suggestions={this.props.suggestions}
+                        filteredSuggestions={this.state.filteredSuggestions}
+                        displayField={this.state.displayField}
+                        onClickCallback={this.handleSuggestionClick}
+                        isVisible={this.state.isFocused}
+                    />
+                </div>
+            </ClickAwayContainer>
+        )
+    }
+}
+
+const MultiSelectDropdownList = (props) => {
+    const {suggestions, filteredSuggestions, displayField, onClickCallback, isVisible} = props;
+
     // Display suggested items
-    renderSuggestedItem = (item, index) => {
+    const renderSuggestedItem = (item, index) => {
         // Check if filetered suggestion is empty, if yes, show all items
-        if (this.state.filteredSuggestions.indexOf(index) > -1 || this.state.filteredSuggestions.length === 0) {
+        if (filteredSuggestions.indexOf(index) > -1 || filteredSuggestions.length === 0) {
             return (<div key={index}
-                         onClick={(e) => {this.handleSuggestionClick(e, index)}}>
-                        {item[this.state.displayField]}
-                    </div>)
+                         onClick={(e) => {onClickCallback(e, index)}}>
+                {item[displayField]}
+            </div>)
         }
     }
 
-    render() {
-        return (
-            <div className={"multiselect-wrapper"} onClick={this.focusInputField}>
-                <div className={"multiselect-inner-wrapper"}>
-                    {this.props.selectedItems.map(this.renderSelectedItem)}
-                    <div className={"multiselect-input-wrapper"}>
-                        <input onChange={this.onInputChange} style={{width: `${this.state.inputFieldWidth}px`}}
-                               value={this.state.input} ref={this.inputField} onKeyPress={this.handleKeyPressInput}/>
-                    </div>
-                </div>
-
-
-                <div className={"multiselect-dropdown-wrapper"}>
-                    <div className="dropdown-content show">
-                        {this.props.suggestions.map(this.renderSuggestedItem)}
-                    </div>
-                </div>
+    return (
+        <div className={"multiselect-dropdown-wrapper"}>
+            <div className={"dropdown-content " + (isVisible? "show":"")}>
+                {suggestions.map(renderSuggestedItem)}
             </div>
-        )
-    }
+        </div>
+    )
 }
