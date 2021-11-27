@@ -7,6 +7,8 @@ A simple multi-select dropdown for react that allows adding custom items to the 
 ## Demo
 See demo at https://moh77.csb.app/
 
+![Alt Text](https://raw.githubusercontent.com/bordernone/editable-creatable-multiselect/master/src/untracked-npm/misc/demo.gif)
+
 ## Example Code
 ```javascript
 import MultiSelect from "editable-creatable-multiselect";
