@@ -47,7 +47,7 @@ export default App;
 | selectedItems       	| list that contains selected items. Can be empty initially. This list will be used subsequently to show what items are selected                                                       	|
 | updateSuggestions   	| a callback function. Triggers if user selects item from the dropdown OR an item is deleted from the selected items.                                                                  	|
 | updateSelectedItems 	| a callback function. Triggers if user clicks a selectedItem OR an item is chosen from the dropdown OR an item is deleted from the selected items OR a new item is added to the list. 	|
-| displayField      	| Object key that you want to be displayed in the dropdown list and selected items. eg: if suggestions list is `[{name:"Google"}, {name:"Microsoft"}]`, we can set `displayField={"name"}` |
+| displayField      	| Object key that you want to be displayed in the dropdown list and selected items. Default: `"name"`. Eg: if suggestions list is `[{name:"Google"}, {name:"Microsoft"}]`, we can set `displayField={"name"}` |
 
 ## Callbacks
 
