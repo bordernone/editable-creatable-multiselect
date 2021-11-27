@@ -39,4 +39,41 @@ function App() {
 export default App;
 ```
 
+## Props Description
+| Props                	| Description                                                                                                                                                                          	|
+|---------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| suggestions         	| a list of objects that are displayed in dropdown. eg: [{name:"Google"}, {name:"Microsoft"}]                                                                                          	|
+| selectedItems       	| list that contains selected items. Can be empty initially. This list will be used subsequently to show what items are selected                                                       	|
+| updateSuggestions   	| a callback function. Triggers if user selects item from the dropdown OR an item is deleted from the selected items.                                                                  	|
+| updateSelectedItems 	| a callback function. Triggers if user clicks a selectedItem OR an item is chosen from the dropdown OR an item is deleted from the selected items OR a new item is added to the list. 	|
+
+## Callbacks
+
+```
+updateSuggestions={(newList, addedItem, removedItem) => {
+    // Handle callback here
+}}
+```
+### updateSuggestions
+| Parameters  	| Desc                                                                                                                                                                                    	|
+|-------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| newList     	| List of items currently in the dropdown list. Note: Item being edited is not in the list. Removed items from user's selection are automatically added to dropdown, hence newList contains removed items. 	|
+| addedItem   	| If user removed an item from their selection, it is added to dropdown, hence addedItem contains item that was added to suggestion as a result of it being removed from user selection   	|
+| removedItem 	| Contains item removed from dropdown list. If user chooses an item from the dropdown, it's removed from the dropdown list. Note this is different than removedItem in updateSelectedItems callback.          	|
+
+
+```
+updateSelectedItems={(newList, addedItem, removedItem, isCreatedByUser) => {
+    // Handle callback here
+}}
+```
+### updateSelectedItems
+| Parameters  	| Desc                                                                                                                                                                                    	|
+|-------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| newList     	| List of items currently selected by user. Note: Item being edited is not in the list.                                                                                                  	|
+| addedItem   	| New item that is added to user's selection. Can be added from dropdown list or can be added manually by user (if added by user, isCreatedByUser flag is set true.                         |
+| removedItem 	| Contains removed item from user's selection. Note: Item being edited is temporarily removed from user's selection. It'd appear here.                                                   	|
+| isCreatedByUser 	| Boolean. This is set true whenever a new item is added to the list. Otherwise, false.                                                   	|
+
+
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
