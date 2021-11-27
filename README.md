@@ -21,12 +21,15 @@ function App() {
             <MultiSelect
                 suggestions={suggestions}
                 selectedItems={selectedList}
-                updateSuggestions={(newList, added, removed) => {
-                    setSuggestions(newList)
+                updateSuggestions={(newList, addedItem, removedItem) => {
+                    setSuggestions(newList);
+                    console.log(addedItem, removedItem);
                 }}
-                updateSelectedItems={(newList, added, removed, isCreated) => {
-                    setSelectedList(newList)
-                }}/>
+                updateSelectedItems={(newList, addedItem, removedItem, isCreatedByUser) => {
+                    setSelectedList(newList);
+                    console.log(addedItem, removedItem, isCreatedByUser);
+                }}
+            />
         </div>
     );
 }
