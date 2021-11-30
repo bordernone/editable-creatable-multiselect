@@ -204,7 +204,7 @@ class MultiSelect extends _react.default.Component {
     }, /*#__PURE__*/_react.default.createElement("div", {
       className: "multiselect-inner-wrapper"
     }, this.props.selectedItems.map(this.renderSelectedItem), /*#__PURE__*/_react.default.createElement("div", {
-      className: "multiselect-input-wrapper"
+      className: "multiselect-input-wrapper" + (this.props.selectedItems.length === 0 ? " full-width" : "")
     }, /*#__PURE__*/_react.default.createElement("input", {
       onChange: this.onInputChange,
       style: {
@@ -212,6 +212,8 @@ class MultiSelect extends _react.default.Component {
       },
       value: this.state.input,
       ref: this.inputField,
+      className: this.props.selectedItems.length === 0 ? "full-width" : "",
+      placeholder: this.props.selectedItems.length === 0 ? this.props.placeholder : "",
       onKeyPress: this.handleKeyPressInput
     }))), /*#__PURE__*/_react.default.createElement(MultiSelectDropdownList, {
       suggestions: this.props.suggestions,

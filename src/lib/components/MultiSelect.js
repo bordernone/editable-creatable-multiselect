@@ -187,9 +187,14 @@ export class MultiSelect extends React.Component {
                 <div className={"multiselect-wrapper"} onClick={this.focusInputField}>
                     <div className={"multiselect-inner-wrapper"}>
                         {this.props.selectedItems.map(this.renderSelectedItem)}
-                        <div className={"multiselect-input-wrapper"}>
-                            <input onChange={this.onInputChange} style={{width: `${this.state.inputFieldWidth}px`}}
-                                   value={this.state.input} ref={this.inputField} onKeyPress={this.handleKeyPressInput}/>
+                        <div className={"multiselect-input-wrapper" + ((this.props.selectedItems.length === 0)? " full-width" : "")}>
+                            <input onChange={this.onInputChange}
+                                   style={{width: `${this.state.inputFieldWidth}px`}}
+                                   value={this.state.input}
+                                   ref={this.inputField}
+                                   className={(this.props.selectedItems.length === 0)? "full-width" : ""}
+                                   placeholder={(this.props.selectedItems.length === 0)? this.props.placeholder : ""}
+                                   onKeyPress={this.handleKeyPressInput}/>
                         </div>
                     </div>
 
@@ -215,7 +220,7 @@ const MultiSelectDropdownList = (props) => {
     const getItemsToDisplay = () => {
         let totalItemsToDisplay = maxDisplayedItems;
         if (!maxDisplayedItems) totalItemsToDisplay = suggestions.length;
-        
+
         let itemsToDisplayIndices = [];
         if (filteredSuggestions.length === 0) {
             // Display all items

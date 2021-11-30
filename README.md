@@ -32,7 +32,8 @@ function App() {
                     console.log(addedItem, removedItem, isCreatedByUser);
                 }}
                 displayField={"name"}
-                maxDisplayedItems={5}/>
+                maxDisplayedItems={5}
+                placeholder={"Type the name of the desired company or choose one."}/>
         </div>
     );
 }
@@ -49,6 +50,8 @@ export default App;
 | updateSelectedItems 	| a callback function. Triggers if user clicks a selectedItem OR an item is chosen from the dropdown OR an item is deleted from the selected items OR a new item is added to the list. 	|
 | displayField      	| Object key that you want to be displayed in the dropdown list and selected items. Default: `"name"`. Eg: if suggestions list is `[{name:"Google"}, {name:"Microsoft"}]`, we can set `displayField={"name"}` |
 | maxDisplayedItems     | Maximum number of items that can appear in the list                                                                                                                                    |
+| placeholder           | Placeholder for the input field                                                                                                                                    |
+
 
 ## Callbacks
 
@@ -64,7 +67,7 @@ updateSuggestions={(newList, addedItem, removedItem) => {
 | addedItem   	| If user removed an item from their selection, it is added to dropdown, hence addedItem contains item that was added to suggestion as a result of it being removed from user selection   	|
 | removedItem 	| Contains item removed from dropdown list. If user chooses an item from the dropdown, it's removed from the dropdown list. Note this is different than removedItem in updateSelectedItems callback.          	|
 
-
+---
 ```
 updateSelectedItems={(newList, addedItem, removedItem, isCreatedByUser) => {
     // Handle callback here

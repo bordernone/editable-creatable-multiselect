@@ -18,7 +18,8 @@ function App() {
                     setSelectedList(newList)
                 }}
                 displayField={"name"}
-                maxDisplayedItems={5}/>
+                maxDisplayedItems={5}
+                placeholder={"Type the name of the desired company or choose one."}/>
         </div>
     );
 }
