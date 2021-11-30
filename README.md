@@ -15,7 +15,7 @@ import MultiSelect from "editable-creatable-multiselect";
 import {useState} from "react";
 
 function App() {
-    const [suggestions, setSuggestions] = useState([{name: 'First Suggestion'}, {name: 'Second Suggestion'}]);
+    const [suggestions, setSuggestions] = useState([{name: 'Microsoft'}, {name: 'Apple'}, {name: 'Google'}, {name: 'JetBrains'}, {name: 'Airbnb'}, {name: 'Amazon'}, {name: 'Tesla'}, {name: 'NVIDIA'}, {name: 'Samsung'}, {name: 'Netflix'}, {name: 'Palantir'}]);
     const [selectedList, setSelectedList] = useState([]);
 
     return (
@@ -32,7 +32,7 @@ function App() {
                     console.log(addedItem, removedItem, isCreatedByUser);
                 }}
                 displayField={"name"}
-            />
+                maxDisplayedItems={5}/>
         </div>
     );
 }
@@ -48,6 +48,7 @@ export default App;
 | updateSuggestions   	| a callback function. Triggers if user selects item from the dropdown OR an item is deleted from the selected items.                                                                  	|
 | updateSelectedItems 	| a callback function. Triggers if user clicks a selectedItem OR an item is chosen from the dropdown OR an item is deleted from the selected items OR a new item is added to the list. 	|
 | displayField      	| Object key that you want to be displayed in the dropdown list and selected items. Default: `"name"`. Eg: if suggestions list is `[{name:"Google"}, {name:"Microsoft"}]`, we can set `displayField={"name"}` |
+| maxDisplayedItems     | Maximum number of items that can appear in the list                                                                                                                                    |
 
 ## Callbacks
 

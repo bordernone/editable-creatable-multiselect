@@ -3,7 +3,7 @@ import './App.css';
 import {useState} from "react";
 
 function App() {
-    const [suggestions, setSuggestions] = useState([{name: 'First Suggestion'}, {name: 'Second Suggestion'}]);
+    const [suggestions, setSuggestions] = useState([{name: 'Microsoft'}, {name: 'Apple'}, {name: 'Google'}, {name: 'JetBrains'}, {name: 'Airbnb'}, {name: 'Amazon'}, {name: 'Tesla'}, {name: 'NVIDIA'}, {name: 'Samsung'}, {name: 'Netflix'}, {name: 'Palantir'}]);
     const [selectedList, setSelectedList] = useState([]);
 
     return (
@@ -17,7 +17,8 @@ function App() {
                 updateSelectedItems={(newList, added, removed, isCreated) => {
                     setSelectedList(newList)
                 }}
-                displayField={"name"}/>
+                displayField={"name"}
+                maxDisplayedItems={5}/>
         </div>
     );
 }

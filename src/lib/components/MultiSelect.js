@@ -86,7 +86,7 @@ export class MultiSelect extends React.Component {
         });
     }
 
-    // When a suggested item is chosen.
+    // When a suggested item is chosen. 'index' is the index of item in the suggestions list
     handleSuggestionClick = (e, index) => {
         let suggestions = this.props.suggestions;
 
@@ -137,6 +137,7 @@ export class MultiSelect extends React.Component {
         }
     }
 
+    // onBlur callback
     clickedAway = () => {
         this.setState({isFocused:false});
     }
@@ -199,6 +200,7 @@ export class MultiSelect extends React.Component {
                         displayField={this.state.displayField}
                         onClickCallback={this.handleSuggestionClick}
                         isVisible={this.state.isFocused}
+                        maxDisplayedItems={this.props.maxDisplayedItems}
                     />
                 </div>
             </ClickAwayContainer>
@@ -207,23 +209,39 @@ export class MultiSelect extends React.Component {
 }
 
 const MultiSelectDropdownList = (props) => {
-    const {suggestions, filteredSuggestions, displayField, onClickCallback, isVisible} = props;
+    const {suggestions, filteredSuggestions, displayField, onClickCallback, isVisible, maxDisplayedItems} = props;
 
     // Display suggested items
-    const renderSuggestedItem = (item, index) => {
-        // Check if filetered suggestion is empty, if yes, show all items
-        if (filteredSuggestions.indexOf(index) > -1 || filteredSuggestions.length === 0) {
-            return (<div key={index}
-                         onClick={(e) => {onClickCallback(e, index)}}>
-                {item[displayField]}
-            </div>)
+    const getItemsToDisplay = () => {
+        let totalItemsToDisplay = maxDisplayedItems;
+        if (!maxDisplayedItems) totalItemsToDisplay = suggestions.length;
+        
+        let itemsToDisplayIndices = [];
+        if (filteredSuggestions.length === 0) {
+            // Display all items
+            let least = Math.min(totalItemsToDisplay, suggestions.length);
+            for (let i = 0; i < least; i++) itemsToDisplayIndices.push(i);
+        } else if (filteredSuggestions.length > totalItemsToDisplay){
+            // slice the array
+            itemsToDisplayIndices = filteredSuggestions.slice(0, totalItemsToDisplay);
+        } else {
+            itemsToDisplayIndices = filteredSuggestions;
         }
+        return itemsToDisplayIndices;
+    }
+
+    // Display suggested items
+    const renderSuggestedItem = (itemIndex, index) => {
+            return (<div key={index}
+                         onClick={(e) => {onClickCallback(e, itemIndex)}}>
+                {suggestions[itemIndex][displayField]}
+            </div>)
     }
 
     return (
         <div className={"multiselect-dropdown-wrapper"}>
             <div className={"dropdown-content " + (isVisible? "show":"")}>
-                {suggestions.map(renderSuggestedItem)}
+                {getItemsToDisplay().map(renderSuggestedItem)}
             </div>
         </div>
     )
