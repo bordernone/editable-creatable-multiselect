@@ -27,7 +27,7 @@ function App() {
                 }}
                 displayField={"name"}
                 maxDisplayedItems={5}
-                disabled={true}
+                disabled={false}
                 editFieldPosBelow={true}
                 placeholder={"Type the name of the desired company or choose one."}/>
         </div>
