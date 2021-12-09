@@ -204,40 +204,42 @@ export class MultiSelect extends React.Component {
 
     render() {
         return (
-            <ClickAwayContainer onBlurCallback={this.clickedAway} disabled={this.props.disabled}>
-                <div className={"multiselect-wrapper"}>
-                    <div className={"multiselect-inner-wrapper " + (this.state.isEditing? "multiselect-elem-disabled":"")} onClick={this.focusInputField}>
-                        {this.props.selectedItems.map(this.renderSelectedItem)}
-                        <div className={"multiselect-input-wrapper" + ((this.props.selectedItems.length === 0)? " full-width" : "")}>
-                            <input onChange={this.onInputChange}
-                                   style={{width: `${this.state.inputFieldWidth}px`}}
-                                   value={this.state.input}
-                                   ref={this.inputField}
-                                   className={(this.props.selectedItems.length === 0)? "full-width" : ""}
-                                   placeholder={(this.props.selectedItems.length === 0)? this.props.placeholder : ""}
-                                   onKeyPress={this.handleKeyPressInput}/>
+            <ClickAwayContainer onBlurCallback={this.clickedAway} >
+                <div className={(this.props.disabled? "cursor-not-allowed":"")}>
+                    <div className={"multiselect-wrapper" + (this.props.disabled? " multiselect-elem-disabled":"")}>
+                        <div className={"multiselect-inner-wrapper " + (this.state.isEditing? "multiselect-elem-disabled":"")} onClick={this.focusInputField}>
+                            {this.props.selectedItems.map(this.renderSelectedItem)}
+                            <div className={"multiselect-input-wrapper" + ((this.props.selectedItems.length === 0)? " full-width" : "")}>
+                                <input onChange={this.onInputChange}
+                                       style={{width: `${this.state.inputFieldWidth}px`}}
+                                       value={this.state.input}
+                                       ref={this.inputField}
+                                       className={(this.props.selectedItems.length === 0)? "full-width" : ""}
+                                       placeholder={(this.props.selectedItems.length === 0)? this.props.placeholder : ""}
+                                       onKeyPress={this.handleKeyPressInput}/>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <MultiSelectDropdownList
-                        disabled={this.state.isEditing}
-                        onClick={this.focusInputField}
-                        suggestions={this.props.suggestions}
-                        filteredSuggestions={this.state.filteredSuggestions}
-                        displayField={this.state.displayField}
-                        onClickCallback={this.handleSuggestionClick}
-                        isVisible={this.state.isFocused}
-                        maxDisplayedItems={this.props.maxDisplayedItems}
-                    />
-
-                    <ItemEdit
-                        isEditing={this.state.isEditing}
-                        editingItem={this.props.selectedItems[this.state.editingItemIndex]}
-                        editingField={this.props.displayField}
-                        editCallback={this.onEditCallback}
-                        showBelow={this.props.editFieldPosBelow}
+                        <MultiSelectDropdownList
+                            disabled={this.state.isEditing}
+                            onClick={this.focusInputField}
+                            suggestions={this.props.suggestions}
+                            filteredSuggestions={this.state.filteredSuggestions}
+                            displayField={this.state.displayField}
+                            onClickCallback={this.handleSuggestionClick}
+                            isVisible={this.state.isFocused}
+                            maxDisplayedItems={this.props.maxDisplayedItems}
                         />
+
+                        <ItemEdit
+                            isEditing={this.state.isEditing}
+                            editingItem={this.props.selectedItems[this.state.editingItemIndex]}
+                            editingField={this.props.displayField}
+                            editCallback={this.onEditCallback}
+                            showBelow={this.props.editFieldPosBelow}
+                        />
+                    </div>
                 </div>
             </ClickAwayContainer>
         )

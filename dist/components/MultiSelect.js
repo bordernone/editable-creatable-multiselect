@@ -239,10 +239,11 @@ class MultiSelect extends _react.default.Component {
 
   render() {
     return /*#__PURE__*/_react.default.createElement(_ClickAway.default, {
-      onBlurCallback: this.clickedAway,
-      disabled: this.props.disabled
+      onBlurCallback: this.clickedAway
     }, /*#__PURE__*/_react.default.createElement("div", {
-      className: "multiselect-wrapper"
+      className: this.props.disabled ? "cursor-not-allowed" : ""
+    }, /*#__PURE__*/_react.default.createElement("div", {
+      className: "multiselect-wrapper" + (this.props.disabled ? " multiselect-elem-disabled" : "")
     }, /*#__PURE__*/_react.default.createElement("div", {
       className: "multiselect-inner-wrapper " + (this.state.isEditing ? "multiselect-elem-disabled" : ""),
       onClick: this.focusInputField
@@ -273,7 +274,7 @@ class MultiSelect extends _react.default.Component {
       editingField: this.props.displayField,
       editCallback: this.onEditCallback,
       showBelow: this.props.editFieldPosBelow
-    })));
+    }))));
   }
 
 }

@@ -112,7 +112,7 @@
 }
 .multiselect-elem-disabled{
     pointer-events: none;
-    filter: blur(1px);
+    filter: blur(0.6px);
 }
 .multiselect-absolute-top-above{
     bottom:100%;
@@ -120,7 +120,9 @@
 .multiselect-absolute-top-below{
     top:100%;
 }
-
+.cursor-not-allowed{
+    cursor: not-allowed;
+}
 .dropdown-content {
     display: none;
     position: absolute;
