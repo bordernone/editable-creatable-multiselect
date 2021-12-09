@@ -1,6 +1,7 @@
 .multiselect-wrapper{
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .multiselect-inner-wrapper{
     display: flex;
@@ -56,7 +57,69 @@
 .multiselect-dropdown-wrapper {
     position: relative;
 }
-
+.multiselect-edit-wrapper{
+    position: absolute;
+    width: 100%;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: stretch;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin: 5px;
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    transition: height 0ms 400ms, opacity 400ms 0ms;
+}
+.multiselect-edit-wrapper.visible{
+    height: 30px; opacity: 1;
+    transition: height 0ms 0ms, opacity 600ms 0ms;
+}
+.edit-popup-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+.edit-input-field{
+    flex-grow: 1;
+    height: 100%;
+}
+.edit-input-field > input {
+    width: 100%;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
+    border: solid 1px gray;
+}
+.edit-action-buttons{
+    height: 100%;
+}
+.edit-action-buttons > button{
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    height: 100%;
+    color: white;
+    cursor: pointer;
+}
+.edit-confirm-button{
+    background-color: #48a548;
+}
+.edit-discard-button{
+    background-color: #b54f4f;
+}
+.multiselect-elem-disabled{
+    pointer-events: none;
+    filter: blur(1px);
+}
+.multiselect-absolute-top-above{
+    top:-100%;
+}
+.multiselect-absolute-top-below{
+    top:100%;
+}
 
 .dropdown-content {
     display: none;
@@ -82,4 +145,5 @@
 }
 
 .show {display: block;}
+.display-none {display: none;}
 .full-width {width:100%!important;}

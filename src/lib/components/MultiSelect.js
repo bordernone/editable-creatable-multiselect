@@ -1,6 +1,14 @@
 import './MultiSelect.css';
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ClickAwayContainer from './ClickAway';
+
+const genericCallbackResponse = {
+    list:undefined,
+    addedItem:undefined,
+    removedItem:undefined,
+    isCreatedByUser:false,
+    editedItem:undefined
+}
 
 export class MultiSelect extends React.Component {
     constructor(props) {
@@ -14,6 +22,8 @@ export class MultiSelect extends React.Component {
             filteredSuggestions: [],
             displayField:"name",
             isFocused:false,
+            isEditing:false,
+            editingItemIndex:-1
         };
     }
 
@@ -71,19 +81,21 @@ export class MultiSelect extends React.Component {
         e.stopPropagation();
         e.preventDefault();
 
-        // Remove from selectedList
-        let selectedItems = this.props.selectedItems;
-        let itemToRemove = selectedItems[index];
-        selectedItems.splice(index, 1);
+        this.setState({isEditing:true, editingItemIndex:index});
+    }
 
-        // callback(newList, addedItem, removedItem, isCreated) Note: isCreated = if the item was created or chosen from suggested items
-        this.props.updateSelectedItems(selectedItems, undefined, itemToRemove, false);
+    onEditCallback = (isEdited, editedItem=undefined) => {
+        if (isEdited && editedItem !== undefined){
+            let selectedItems = this.props.selectedItems;
 
-        // Put the item to input field
-        this.setState({input: itemToRemove[this.state.displayField]}, () => {
-            this.focusInputField();
-            this.setInputWidth();
-        });
+            selectedItems[this.state.editingItemIndex] = editedItem;
+
+            let response = {...genericCallbackResponse};
+            response.list = selectedItems;
+            response.editedItem = editedItem;
+            this.props.updateSelectedItems(response);
+        }
+        this.setState({isEditing:false, editingItemIndex:-1});
     }
 
     // When a suggested item is chosen. 'index' is the index of item in the suggestions list
@@ -91,13 +103,19 @@ export class MultiSelect extends React.Component {
         let suggestions = this.props.suggestions;
 
         const itemChosen = suggestions[index];
-        suggestions.splice(index, 1);
 
-        // Add item to selected list // callback(newList, addedItem, removedItem, isCreated) Note: isCreated = if the item was created or chosen from suggested items
-        this.props.updateSelectedItems([...this.props.selectedItems, itemChosen], itemChosen, undefined, false);
+        // Add item to selected list
+        let response = {...genericCallbackResponse};
+        response.list = [...this.props.selectedItems, itemChosen];
+        response.addedItem = itemChosen;
+        this.props.updateSelectedItems(response);
 
         // Update suggestions
-        this.props.updateSuggestions(suggestions, undefined, itemChosen);
+        suggestions.splice(index, 1);
+        response = {...genericCallbackResponse};
+        response.list = suggestions;
+        response.removedItem = itemChosen;
+        this.props.updateSuggestions(response);
 
         this.setState((prevState) => ({
             input: "",
@@ -119,12 +137,11 @@ export class MultiSelect extends React.Component {
 
         // delete from the selected list,
         selectedItems.splice(index, 1);
-        // callback(newList, addedItem, removedItem, isCreated) Note: isCreated = if the item was created or chosen from suggested items
-        this.props.updateSelectedItems(selectedItems, undefined, itemToRemove, false);
 
-        // add removed item to suggestions list
-        let suggestions = this.props.suggestions;
-        this.props.updateSuggestions([...suggestions, itemToRemove], itemToRemove, undefined);
+        let response = {...genericCallbackResponse};
+        response.list = selectedItems;
+        response.removedItem = itemToRemove;
+        this.props.updateSelectedItems(response);
 
         this.filterSuggestions(this.state.input);
         this.focusInputField();
@@ -148,11 +165,15 @@ export class MultiSelect extends React.Component {
         const enteredText = this.state.input;
         if (enteredText.trim().length === 0)return;
         const item = {
-            [this.state.displayField]: enteredText.split(',')[0]
+            [this.state.displayField]: enteredText
         };
 
-        // Add to seleted list // callback(newList, addedItem, removedItem, isCreated) Note: isCreated = if the item was created or chosen from suggested items
-        this.props.updateSelectedItems([...this.props.selectedItems, item], item, undefined, true);
+        // Add to selected list
+        let response = {...genericCallbackResponse};
+        response.list = [...this.props.selectedItems, item];
+        response.addedItem = item;
+        response.isCreatedByUser = true;
+        this.props.updateSelectedItems(response);
 
         // Update input field and reset filtered suggestions
         this.setState(() => ({
@@ -183,9 +204,9 @@ export class MultiSelect extends React.Component {
 
     render() {
         return (
-            <ClickAwayContainer onBlurCallback={this.clickedAway}>
-                <div className={"multiselect-wrapper"} onClick={this.focusInputField}>
-                    <div className={"multiselect-inner-wrapper"}>
+            <ClickAwayContainer onBlurCallback={this.clickedAway} disabled={this.props.disabled}>
+                <div className={"multiselect-wrapper"}>
+                    <div className={"multiselect-inner-wrapper " + (this.state.isEditing? "multiselect-elem-disabled":"")} onClick={this.focusInputField}>
                         {this.props.selectedItems.map(this.renderSelectedItem)}
                         <div className={"multiselect-input-wrapper" + ((this.props.selectedItems.length === 0)? " full-width" : "")}>
                             <input onChange={this.onInputChange}
@@ -200,6 +221,8 @@ export class MultiSelect extends React.Component {
 
 
                     <MultiSelectDropdownList
+                        disabled={this.state.isEditing}
+                        onClick={this.focusInputField}
                         suggestions={this.props.suggestions}
                         filteredSuggestions={this.state.filteredSuggestions}
                         displayField={this.state.displayField}
@@ -207,6 +230,14 @@ export class MultiSelect extends React.Component {
                         isVisible={this.state.isFocused}
                         maxDisplayedItems={this.props.maxDisplayedItems}
                     />
+
+                    <ItemEdit
+                        isEditing={this.state.isEditing}
+                        editingItem={this.props.selectedItems[this.state.editingItemIndex]}
+                        editingField={this.props.displayField}
+                        editCallback={this.onEditCallback}
+                        showBelow={this.props.editFieldPosBelow}
+                        />
                 </div>
             </ClickAwayContainer>
         )
@@ -214,7 +245,7 @@ export class MultiSelect extends React.Component {
 }
 
 const MultiSelectDropdownList = (props) => {
-    const {suggestions, filteredSuggestions, displayField, onClickCallback, isVisible, maxDisplayedItems} = props;
+    const {suggestions, filteredSuggestions, displayField, onClickCallback, isVisible, maxDisplayedItems, disabled} = props;
 
     // Display suggested items
     const getItemsToDisplay = () => {
@@ -244,10 +275,57 @@ const MultiSelectDropdownList = (props) => {
     }
 
     return (
-        <div className={"multiselect-dropdown-wrapper"}>
-            <div className={"dropdown-content " + (isVisible? "show":"")}>
+        <div className={"multiselect-dropdown-wrapper " + (disabled? "multiselect-elem-disabled":"")}>
+            <div className={"dropdown-content " + (isVisible && !disabled? "show":"")}>
                 {getItemsToDisplay().map(renderSuggestedItem)}
             </div>
         </div>
+    )
+}
+
+const ItemEdit = (props) => {
+    const {isEditing, editCallback, editingItem, editingField, showBelow} = props;
+    const [inputText, setInputText] = useState("");
+
+    const confirm = () => {
+        let item = editingItem;
+        item[editingField] = inputText;
+        editCallback(true, item);
+    }
+
+    const discard = () => {
+        editCallback(false);
+    }
+
+    const onInputChange = (e) => {
+        setInputText(e.target.value);
+    }
+
+    const handleKeyPressInput = (e) => {
+        if (e.key === 'Enter'){
+            confirm();
+        }
+    }
+
+    useEffect(() => {
+        if (editingItem !== undefined){
+            setInputText(editingItem[editingField]);
+        }
+    }, [editingItem, editingField])
+
+    return (
+        <ClickAwayContainer onBlurCallback={()=>{if (isEditing){discard()}}} >
+            <div className={"multiselect-edit-wrapper" + (isEditing? " visible":"") + (!showBelow? " multiselect-absolute-top-above":" multiselect-absolute-top-below")}>
+                <div className={"edit-popup-wrapper"}>
+                    <div className={"edit-input-field"}>
+                        <input value={inputText} onChange={onInputChange} onKeyPress={handleKeyPressInput}/>
+                    </div>
+                    <div className={"edit-action-buttons"}>
+                        <button className={"edit-confirm-button"} onClick={confirm}>&#10003;</button>
+                        <button className={"edit-discard-button"} onClick={discard}>&#10006;</button>
+                    </div>
+                </div>
+            </div>
+        </ClickAwayContainer>
     )
 }
