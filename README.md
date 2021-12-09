@@ -10,7 +10,6 @@ See demo at https://moh77.csb.app/
 ## Example Code
 ```javascript
 import MultiSelect from "editable-creatable-multiselect";
-import './App.css';
 import {useState} from "react";
 
 function App() {
