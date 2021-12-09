@@ -270,10 +270,12 @@ const MultiSelectDropdownList = (props) => {
 
     // Display suggested items
     const renderSuggestedItem = (itemIndex, index) => {
+        if (suggestions[itemIndex] !== undefined){
             return (<div key={index}
                          onClick={(e) => {onClickCallback(e, itemIndex)}}>
                 {suggestions[itemIndex][displayField]}
             </div>)
+        }
     }
 
     return (

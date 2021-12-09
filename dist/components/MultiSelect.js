@@ -314,12 +314,14 @@ const MultiSelectDropdownList = props => {
 
 
   const renderSuggestedItem = (itemIndex, index) => {
-    return /*#__PURE__*/_react.default.createElement("div", {
-      key: index,
-      onClick: e => {
-        onClickCallback(e, itemIndex);
-      }
-    }, suggestions[itemIndex][displayField]);
+    if (suggestions[itemIndex] !== undefined) {
+      return /*#__PURE__*/_react.default.createElement("div", {
+        key: index,
+        onClick: e => {
+          onClickCallback(e, itemIndex);
+        }
+      }, suggestions[itemIndex][displayField]);
+    }
   };
 
   return /*#__PURE__*/_react.default.createElement("div", {
