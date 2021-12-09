@@ -115,7 +115,7 @@
     filter: blur(1px);
 }
 .multiselect-absolute-top-above{
-    top:-100%;
+    bottom:100%;
 }
 .multiselect-absolute-top-below{
     top:100%;
