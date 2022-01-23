@@ -91,6 +91,7 @@
     height: 100%;
     box-sizing: border-box;
     border: solid 1px gray;
+    background: white;
 }
 .edit-action-buttons{
     height: 100%;
