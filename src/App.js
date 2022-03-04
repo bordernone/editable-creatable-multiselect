@@ -29,6 +29,7 @@ function App() {
                 maxDisplayedItems={5}
                 disabled={false}
                 editFieldPosBelow={true}
+                autoAddOnBlur={true}
                 placeholder={"Type the name of the desired company or choose one."}/>
         </div>
     );

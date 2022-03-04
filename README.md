@@ -39,6 +39,7 @@ function App() {
                 maxDisplayedItems={5}
                 disabled={false}
                 editFieldPosBelow={true}
+                autoAddOnBlur={false}
                 placeholder={"Type the name of the desired company or choose one."}/>
         </div>
     );
@@ -59,8 +60,8 @@ export default App;
 | maxDisplayedItems      | Maximum number of items that can appear in the list.  [Optional]                                                                                                                                            |
 | placeholder            | Placeholder for the input field.  [Optional]                                                                                                                                                                |
 | disabled               | Boolean. Whether the component is disabled or enabled. [Optional]                                                                                                                                           |
-| editFieldPosBelow      | Booleam. Whether the edit box should appear downwards or upwards. Default: false. [Optional]                                                                                                                |
-
+| editFieldPosBelow      | Boolean. Whether the edit box should appear downwards or upwards. Default: false. [Optional]                                                                                                                |
+| autoAddOnBlur          | Boolean. When the input loses focus, should text in input box automatically be added to the list? Default: false. [Optional]                                                                                |
 
 ## Callbacks
 
