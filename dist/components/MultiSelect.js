@@ -168,13 +168,16 @@ class MultiSelect extends _react.default.Component {
     });
 
     _defineProperty(this, "clickedAway", () => {
+      if (this.state.input.trim().length !== 0 && this.props.autoAddOnBlur) {
+        this.addItemToList();
+      }
+
       this.setState({
         isFocused: false
       });
     });
 
-    _defineProperty(this, "addItemToList", e => {
-      e.preventDefault();
+    _defineProperty(this, "addItemToList", () => {
       const enteredText = this.state.input;
       if (enteredText.trim().length === 0) return;
       const item = {
@@ -198,7 +201,8 @@ class MultiSelect extends _react.default.Component {
 
     _defineProperty(this, "handleKeyPressInput", e => {
       if (e.key === 'Enter') {
-        this.addItemToList(e);
+        e.preventDefault();
+        this.addItemToList();
       }
     });
 

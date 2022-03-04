@@ -156,12 +156,14 @@ export class MultiSelect extends React.Component {
 
     // onBlur callback
     clickedAway = () => {
+        if (this.state.input.trim().length !== 0 && this.props.autoAddOnBlur){
+            this.addItemToList();
+        }
         this.setState({isFocused:false});
     }
 
     // Add new item to the list "Create"
-    addItemToList = (e) => {
-        e.preventDefault();
+    addItemToList = () => {
         const enteredText = this.state.input;
         if (enteredText.trim().length === 0)return;
         const item = {
@@ -186,7 +188,8 @@ export class MultiSelect extends React.Component {
     // Check if entered is pressed when typing, if so, add new item to the list.
     handleKeyPressInput = (e) => {
         if (e.key === 'Enter'){
-            this.addItemToList(e);
+            e.preventDefault();
+            this.addItemToList();
         }
     }
 
